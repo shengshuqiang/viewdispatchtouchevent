@@ -37,39 +37,60 @@ public class Helper {
     }
 
     public static void logPreDispatchTouchEvent(View view, MotionEvent event) {
-        logPre("DispatchTouchEvent", view, onDispatchTouchEventNestLevel++, "#pre dispatchTouchEvent: event=" + MotionEvent.actionToString(event.getAction()), true);
+        String action = MotionEvent.actionToString(event.getAction());
+        logPre("DispatchTouchEvent(" + action + ")", view, onDispatchTouchEventNestLevel++, "#pre dispatchTouchEvent: event=" + action, true);
     }
 
     public static void logPostDispatchTouchEvent(View view, MotionEvent event, boolean handled) {
-        logPost("DispatchTouchEvent", view, --onDispatchTouchEventNestLevel, "#post dispatchTouchEvent: event=" + MotionEvent.actionToString(event.getAction()) + ", handled=" + handled, true);
+        logPost("DispatchTouchEvent(" + handled + ")", view, --onDispatchTouchEventNestLevel, "#post dispatchTouchEvent: event=" + MotionEvent.actionToString(event.getAction()) + ", handled=" + handled, true);
     }
 
     public static void logPreOnInterceptTouchEvent(View view, MotionEvent event) {
-        logPre("OnInterceptTouchEvent", view, onDispatchTouchEventNestLevel, "#pre onInterceptTouchEvent: event=" + MotionEvent.actionToString(event.getAction()), false);
+        String action = MotionEvent.actionToString(event.getAction());
+        logPre("OnInterceptTouchEvent(" + action + ")", view, onDispatchTouchEventNestLevel, "#pre onInterceptTouchEvent: event=" + action, false);
     }
 
-    public static void logPostOnInterceptTouchEvent(View view, MotionEvent event, boolean handled) {
-        logPost("OnInterceptTouchEvent", view, onDispatchTouchEventNestLevel, "#post onInterceptTouchEvent: event=" + MotionEvent.actionToString(event.getAction()) + ", handled=" + handled, false);
+    public static void logPostOnInterceptTouchEvent(View view, MotionEvent event, boolean intercepted) {
+        logPost("OnInterceptTouchEvent(" + intercepted + ")", view, onDispatchTouchEventNestLevel, "#post onInterceptTouchEvent: event=" + MotionEvent.actionToString(event.getAction()) + ", intercepted=" + intercepted, false);
     }
 
     public static void logPreOnTouchEvent(View view, MotionEvent event) {
-        logPre("OnTouchEvent", view, onDispatchTouchEventNestLevel, "#pre onTouchEvent: event=" + MotionEvent.actionToString(event.getAction()), false);
+        String action = MotionEvent.actionToString(event.getAction());
+        logPre("OnTouchEvent(" + action + ")", view, onDispatchTouchEventNestLevel, "#pre onTouchEvent: event=" + action, false);
     }
 
     public static void logPostOnTouchEvent(View view, MotionEvent event, boolean handled) {
-        logPost("OnTouchEvent", view, onDispatchTouchEventNestLevel, "#post onTouchEvent: event=" + MotionEvent.actionToString(event.getAction()) + ", handled=" + handled, false);
+        String action = MotionEvent.actionToString(event.getAction());
+        logPost("OnTouchEvent(" + handled + ")", view, onDispatchTouchEventNestLevel, "#post onTouchEvent: event=" + action + ", handled=" + handled, false);
+    }
+
+    private static String getViewName(View view) {
+        StringBuilder nameBuilder = new StringBuilder();
+
+        nameBuilder.append(getViewSimpleName(view))
+                .append(view.getClass().getSimpleName());
+
+        return nameBuilder.toString();
     }
 
     private static String getViewSimpleName(View view) {
-        return view.getClass().getSimpleName();
+        String simpleName = null;
+
+        Object tag = view.getTag();
+        if (tag instanceof String) {
+            simpleName = tag + "@";
+        }
+
+        return simpleName;
     }
+
 
     private static void logPre(String title, View view, int nestLevel, String msg, boolean newLine) {
-        Helper.log(getPreSeparateStr(title, nestLevel, newLine) + getViewSimpleName(view) + msg);
+        Helper.log(getPreSeparateStr(getViewSimpleName(view) + title, nestLevel, newLine) + getViewName(view) + msg);
     }
 
-    private static void logPost(String title, View view, int nestLevel,  String msg, boolean newLine) {
-        Helper.log(getViewSimpleName(view) + msg + getPostSeparateStr(title, nestLevel, newLine));
+    private static void logPost(String title, View view, int nestLevel, String msg, boolean newLine) {
+        Helper.log(getViewName(view) + msg + getPostSeparateStr(getViewSimpleName(view) + title, nestLevel, newLine));
     }
 
     private static String getPreSeparateStr(String title, int nestLevel, boolean newLine) {

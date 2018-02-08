@@ -15,12 +15,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gotoActivity();
-
-
     }
 
     private void gotoActivity() {
-        Intent intent = new Intent(this, ScrollViewNestButtonActivity.class);
+        Intent intent = new Intent(this, ParentInterceptTouchEventActivity.class);
         startActivity(intent);
     }
 

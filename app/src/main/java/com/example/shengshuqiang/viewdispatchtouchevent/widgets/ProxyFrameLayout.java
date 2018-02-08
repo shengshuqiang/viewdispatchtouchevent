@@ -11,6 +11,11 @@ import com.example.shengshuqiang.viewdispatchtouchevent.Helper;
  * Created by shengshuqiang on 2018/1/7.
  */
 public class ProxyFrameLayout extends FrameLayout {
+    /* 是否消费事件*/
+    private boolean ishandleEvent = false;
+    /* 在哪个action拦截（ACTION_DOWN、ACTION_MOVE、ACTION_UP）*/
+    private int interceptTouchEventAction = -1;
+
     public ProxyFrameLayout(Context context) {
         super(context);
     }
@@ -52,22 +57,33 @@ public class ProxyFrameLayout extends FrameLayout {
     public boolean onInterceptTouchEvent(MotionEvent event) {
         Helper.logPreOnInterceptTouchEvent(this, event);
 
-        boolean handled = super.onInterceptTouchEvent(event);
+        boolean intercepted = (interceptTouchEventAction == event.getAction()) || super.onInterceptTouchEvent(event);
 
-        Helper.logPostOnInterceptTouchEvent(this, event, handled);
+        Helper.logPostOnInterceptTouchEvent(this, event, intercepted);
 
-        return handled;
+        return intercepted;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Helper.logPreOnTouchEvent(this, event);
 
-        boolean handled = super.onTouchEvent(event);
+        boolean handled = ishandleEvent || super.onTouchEvent(event);
 
         Helper.logPostOnTouchEvent(this, event, handled);
 
         return handled;
     }
 
+    public void setName(String name) {
+        setTag(name);
+    }
+
+    public void setIshandleEvent(boolean ishandleEvent) {
+        this.ishandleEvent = ishandleEvent;
+    }
+
+    public void setInterceptTouchEventAction(int interceptTouchEventAction) {
+        this.interceptTouchEventAction = interceptTouchEventAction;
+    }
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="父容器拦截事件时机"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
+        <CheckBox
+            android:id="@+id/checkbox_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ACTION_DOWN"/>
+
+        <CheckBox
+            android:id="@+id/checkbox_move"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ACTION_MOVE"/>
+
+        <CheckBox
+            android:id="@+id/checkbox_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ACTION_UP"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="角色事件消费状态"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/checkbox_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Parent"/>
+
+        <CheckBox
+            android:id="@+id/checkbox_child"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Child"/>
+
+    </LinearLayout>
+    
+    <com.example.shengshuqiang.viewdispatchtouchevent.widgets.ProxyFrameLayout
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_red_light">
+        
+        <com.example.shengshuqiang.viewdispatchtouchevent.widgets.ProxyFrameLayout
+            android:id="@+id/child"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@android:color/holo_blue_bright"
+            android:layout_gravity="center"/>
+
+    </com.example.shengshuqiang.viewdispatchtouchevent.widgets.ProxyFrameLayout>
+</LinearLayout>
